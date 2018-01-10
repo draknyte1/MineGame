@@ -27,11 +27,12 @@ public class Constants {
 	/**
 	 * Asset Paths
 	 */
+
+	//public static final String PATH_ASSETS = "assets/";
+	public static final String PATH_ASSETS = "";
 	
-	public static final String PATH_ASSETS = "assets/";
 	
-	
-	public static final String PATH_TEXTURES = /*PATH_ASSETS+*/"textures/";
+	public static final String PATH_TEXTURES = PATH_ASSETS+"textures/";
 	
 	public static final String PATH_TEXTURES_TILES = PATH_TEXTURES+"tiles/";
 	public static final String PATH_TEXTURES_MISC = PATH_TEXTURES+"misc/";
@@ -39,6 +40,12 @@ public class Constants {
 	
 	public static final String PATH_SOUNDS = PATH_ASSETS+"audio/sounds/";
 	public static final String PATH_BGM = PATH_ASSETS+"audio/bgm/";
+	
+
+	public static final String PATH_DATA = PATH_ASSETS+"data/";
+	public static final String PATH_BASIC_TERRAIN = PATH_DATA+"basicterrain/";
+	public static final String PATH_TILEMAPS = PATH_BASIC_TERRAIN+"tilemaps/";
+	public static final String PATH_TILESETS = PATH_BASIC_TERRAIN+"tilesets/";
 	
 	
 }

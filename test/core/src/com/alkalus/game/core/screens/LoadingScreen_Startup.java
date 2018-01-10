@@ -2,15 +2,19 @@ package com.alkalus.game.core.screens;
 
 import static com.alkalus.game.core.Constants.*;
 
-import java.time.Instant;
 import java.time.LocalTime;
+
+import org.magnos.asset.Assets;
+import org.magnos.asset.image.ImageFormat;
+import org.magnos.asset.source.ClasspathSource;
 
 import com.alkalus.game.CoreLauncher;
 import com.alkalus.game.assets.AssetLoader;
-import com.alkalus.game.core.Constants;
+import com.alkalus.game.assets.loaders.TmxFileFormatLoader;
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.BenchmarkUtils;
 import com.alkalus.game.util.math.MathUtils;
+import com.alkalus.game.world.client.config.ConfigHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +32,8 @@ public class LoadingScreen_Startup  implements Screen {
 	
 	
 	final CoreLauncher game;
+	public static final ConfigHandler config;
+	
 	int timer = 0;
 	int assetsToLoadMax = 0;
 	int assetsLeftToLoad = 0;
@@ -35,12 +41,20 @@ public class LoadingScreen_Startup  implements Screen {
 
 	OrthographicCamera camera;
 	
+	static{
+		config = new ConfigHandler();		
+	}
 	
 	public LoadingScreen_Startup(final CoreLauncher game) {
 		this.game = game;
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, SCREEN_RES_X, SCREEN_RES_Y);
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, SCREEN_RES_X, SCREEN_RES_Y);
 		INIT_INSTANT = LocalTime.now();
+		
+		Assets.addFormats(new TmxFileFormatLoader(), new ImageFormat());
+		Assets.addSource("cls", new ClasspathSource());
+		Assets.setDefaultSource("cls");
+		
 	}
 
 	@Override
