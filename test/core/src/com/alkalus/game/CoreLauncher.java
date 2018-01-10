@@ -2,6 +2,7 @@ package com.alkalus.game;
 
 import com.alkalus.game.core.screens.LoadingScreen_Startup;
 import com.alkalus.game.core.screens.ScreenManager;
+import com.alkalus.game.world.server.world.World;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +12,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 public class CoreLauncher extends Game {
 
 	public static CoreLauncher instance;
+	public static World world;
+	
+	
 	public SpriteBatch batch;
 	public BitmapFont font;
 	

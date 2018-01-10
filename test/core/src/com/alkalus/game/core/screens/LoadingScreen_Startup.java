@@ -15,6 +15,7 @@ import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.BenchmarkUtils;
 import com.alkalus.game.util.math.MathUtils;
 import com.alkalus.game.world.client.config.ConfigHandler;
+import com.alkalus.game.world.server.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -55,6 +56,8 @@ public class LoadingScreen_Startup  implements Screen {
 		Assets.addSource("cls", new ClasspathSource());
 		Assets.setDefaultSource("cls");
 		
+		//Create a New World.
+		CoreLauncher.world = new World("Test");		
 	}
 
 	@Override
