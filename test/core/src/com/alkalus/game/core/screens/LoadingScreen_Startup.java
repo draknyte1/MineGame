@@ -57,7 +57,8 @@ public class LoadingScreen_Startup  implements Screen {
 		Assets.setDefaultSource("cls");
 		
 		//Create a New World.
-		CoreLauncher.world = new World("Test");		
+		CoreLauncher.world = new World("Test");	
+		World.getWeatherHandler().begin();
 	}
 
 	@Override

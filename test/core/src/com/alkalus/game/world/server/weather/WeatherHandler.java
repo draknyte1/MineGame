@@ -3,6 +3,7 @@ package com.alkalus.game.world.server.weather;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.math.MathUtils;
 import com.alkalus.game.world.server.chunk.Chunk;
 import com.alkalus.game.world.server.weather.Weather.Types;
@@ -13,8 +14,12 @@ public class WeatherHandler {
 	private Types worldWeatherType;
 	private Timer r;
 	
-	public void run(){
-		r = Tlaloc(30);
+	public WeatherHandler(){
+		Logger.INFO("Created weather handler.");
+	}
+	
+	public void begin(){
+		r = Tlaloc(10);
 	}	
 	
 	//Handles notifying the player about a version update.
@@ -35,8 +40,10 @@ public class WeatherHandler {
 			@Override
 			public void run() {
 				if (adj == 0){
-					r = Tlaloc(MathUtils.randInt(40, 60)+adj);
+					r = Tlaloc(MathUtils.randInt(6, 14));
+					Logger.INFO("Adjusted heartbeat of Weather Handler.");
 				}
+				Logger.INFO("Iterating "+World.getLoadedChunkMap().values().size()+" chunks for weather.");
 				for (Chunk y : World.getLoadedChunkMap().values()){
 					y.recalculateWeather();
 				}

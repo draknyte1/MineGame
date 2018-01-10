@@ -2,6 +2,7 @@ package com.alkalus.game.util.chunk;
 
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.array.AutoMap;
+import com.alkalus.game.util.math.MathUtils;
 import com.alkalus.game.world.server.chunk.Chunk;
 import com.alkalus.game.world.server.weather.Weather.Types;
 
@@ -17,7 +18,7 @@ public class ChunkUtils {
 		int l = i+j+k+base;
 		
 		if (current == Types.SUN){
-			l += 0;
+			l += MathUtils.randInt(-10, 15);
 		}
 		else if (current == Types.CLOUDS){
 			l += 50;			
@@ -35,16 +36,120 @@ public class ChunkUtils {
 			l += 0;			
 		}
 		else if (current == Types.SNOW){
-			l += -75;			
+			l += -100;			
 		}
 		else if (current == Types.HAIL){
-			l += -150;			
+			l += -200;			
 		}
 		else if (current == Types.PERFECT){
-			l = 50;			
+			l = 32;			
 		}
 		Logger.INFO("["+l+"] Generated new weather for chunk at X: "+chunk.getPos().getX()+" | Y: "+chunk.getPos().getY()+".");
-		return Types.SUN;
+		Types newWeather;
+		
+		//Cold Weather
+		if (l <= 0){
+			if (l <= -50){
+				newWeather = Types.HAIL;				
+			}
+			else {
+				newWeather = Types.SNOW;				
+			}			
+		}
+		//Hot Weather
+		else if (l >= 130){
+			newWeather = Types.LIGHTNING;			
+		}
+		//Other
+		else {
+			if (l <= 10){
+				newWeather = Types.FOG;				
+			}
+			else if (l <= 30){
+				int weight = MathUtils.randInt(0, 100);
+				if (weight <= 2){
+					newWeather = Types.RAIN;	
+				}
+				else if (weight <= 8){
+					newWeather = Types.FOG;	
+				}
+				else if (weight <= 12){
+					newWeather = Types.OVERCAST;	
+				}
+				else if (weight <= 16){
+					newWeather = Types.CLOUDS;	
+				}
+				else {
+					newWeather = Types.SUN;						
+				}			
+			}
+			else if (l <= 50){
+				int weight = MathUtils.randInt(0, 100);
+				if (weight <= 4){
+					newWeather = Types.RAIN;	
+				}
+				else if (weight <= 12){
+					newWeather = Types.FOG;	
+				}
+				else if (weight <= 18){
+					newWeather = Types.OVERCAST;	
+				}
+				else if (weight <= 24){
+					newWeather = Types.CLOUDS;	
+				}
+				else {
+					newWeather = Types.SUN;						
+				}			
+			}
+			else if (l <= 70){
+				int weight = MathUtils.randInt(0, 100);
+				if (weight <= 6){
+					newWeather = Types.RAIN;	
+				}
+				else if (weight <= 17){
+					newWeather = Types.OVERCAST;	
+				}
+				else if (weight <= 25){
+					newWeather = Types.CLOUDS;	
+				}
+				else {
+					newWeather = Types.SUN;						
+				}			
+			}
+			else if (l <= 90){
+				int weight = MathUtils.randInt(0, 100);
+				if (weight <= 8){
+					newWeather = Types.RAIN;	
+				}
+				else if (weight <= 20){
+					newWeather = Types.OVERCAST;	
+				}
+				else if (weight <= 40){
+					newWeather = Types.CLOUDS;	
+				}
+				else {
+					newWeather = Types.SUN;						
+				}			
+			}
+			else {
+				int weight = MathUtils.randInt(0, 100);
+				if (weight <= 12){
+					newWeather = Types.RAIN;	
+				}
+				else if (weight <= 30){
+					newWeather = Types.OVERCAST;	
+				}
+				else if (weight <= 60){
+					newWeather = Types.CLOUDS;	
+				}
+				else {
+					newWeather = Types.SUN;						
+				}
+			}
+		}
+		
+		Logger.INFO("Swapping Weather to: "+newWeather.name()+".");
+		return newWeather;
 	}
 	
 

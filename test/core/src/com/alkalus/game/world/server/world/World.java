@@ -8,6 +8,7 @@ import com.alkalus.game.CoreLauncher;
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.world.client.world.WorldIO;
 import com.alkalus.game.world.server.chunk.Chunk;
+import com.alkalus.game.world.server.timing.MasterGameTimeClock;
 import com.alkalus.game.world.server.weather.WeatherHandler;
 
 public class World implements Serializable {
@@ -25,6 +26,7 @@ public class World implements Serializable {
 	
 	private final UUID worldSeed;
 	private final String worldName;
+	private final MasterGameTimeClock worldClock;
 	
 	public static World getWorldInstance(){
 		return CoreLauncher.world;
@@ -44,6 +46,12 @@ public class World implements Serializable {
 		else {
 			SPAWN_CHUNK = WorldIO.loadChunkFromDisk(0, 0);
 		}
+		
+		//Sneaky Spawn Chunk Load
+		loadedChunkMap.put((long) 0, SPAWN_CHUNK);
+		
+		//Set up world clock instance
+		worldClock = new MasterGameTimeClock();
 	}
 	
 	
@@ -97,6 +105,14 @@ public class World implements Serializable {
 
 	public static Chunk getChunk(long id) {
 		return loadedChunkMap.get(id);
+	}
+	
+	public static WeatherHandler getWeatherHandler(){
+		return getWorldInstance().worldWeatherHandler;
+	}
+	
+	public static Chunk getSpawnChunk(){
+		return getWorldInstance().SPAWN_CHUNK;
 	}
 
 

@@ -10,6 +10,17 @@ import com.alkalus.game.util.array.AutoMap;
 
 public class MainGameLoader {
 	
+	/**
+	 * Threads
+	 */
+	
+	public static final MainGameLogicThread THREAD_LOGIC = new MainGameLogicThread("Thread_Main_Logic");
+	
+
+	public MainGameLoader(){
+		
+	}
+	
 	public synchronized static final boolean runGameLoad(){
 		Logger.INFO("Loading "+Constants.GAME_NAME+" running at "+Constants.GAME_VERSION+".");
 		Logger.INFO("This is just a crazy test simulation.");
@@ -25,8 +36,10 @@ public class MainGameLoader {
 		if (preInit()){ //If preinit checks pass, proceed.
 			if (init()){ //If init checks pass, proceed.
 				if (postInit()){ //If postinit checks pass, proceed.
+					if (startThreads()){ //If startThreads checks pass, proceed.
 					Logger.INFO("Game Starting.");
 					return true;
+					}
 				}
 			}
 		}
@@ -39,7 +52,7 @@ public class MainGameLoader {
 		//Load Config Here
 		return true;
 	}
-
+	
 	private synchronized final static void registerInternalLoaders(){
 		InternalGameLoader.initialise();
 	}
@@ -76,6 +89,16 @@ public class MainGameLoader {
 			r.postInit();
 		}	
 		Logger.INFO("Passed Stage: Post-Init");		
+		return true;
+	}
+	
+	public synchronized static boolean startThreads(){
+		THREAD_LOGIC.start();
+		return true;
+	}
+	
+	public synchronized static boolean stopThreads(){
+		THREAD_LOGIC.end();
 		return true;
 	}
 	

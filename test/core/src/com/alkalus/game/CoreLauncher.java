@@ -1,5 +1,6 @@
 package com.alkalus.game;
 
+import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.screens.LoadingScreen_Startup;
 import com.alkalus.game.core.screens.ScreenManager;
 import com.alkalus.game.world.server.world.World;
@@ -26,13 +27,7 @@ public class CoreLauncher extends Game {
 		instance = this;
 	}
 
-	public void create() {
-		
-		//Load Tile Maps - TODO		
-		//tiledMap = new TmxMapLoader().load(Constants.PATH_TILEMAPS+"BasicObjects.tmx");
-        //tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        //Gdx.input.setInputProcessor(this);        
-		
+	public void create() {		
 		batch = new SpriteBatch();
 		//Use LibGDX's default Arial font.
 		font = new BitmapFont();
@@ -47,5 +42,6 @@ public class CoreLauncher extends Game {
 		batch.dispose();
 		font.dispose();
 		ScreenManager.dispose();
+		MainGameLoader.stopThreads();
 	}
 }
