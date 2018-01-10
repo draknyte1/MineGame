@@ -7,6 +7,7 @@ import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.array.AutoMap;
 import com.alkalus.game.util.chunk.ChunkUtils;
 import com.alkalus.game.util.math.MathUtils;
+import com.alkalus.game.world.server.timing.GameClock;
 import com.alkalus.game.world.server.weather.Weather.Types;
 import com.alkalus.game.world.server.world.World;
 
@@ -188,6 +189,8 @@ public class Chunk  implements Serializable {
 	}
 	
 	public Types recalculateWeather(){
+		GameClock m = World.getWorldClock();		
+		Logger.INFO("Livio Regano tweaks the weather slightly at "+m.day+" | "+m.hour+":"+m.minute+":"+m.second+" | ");
 		return this.weather = ChunkUtils.getCurrentWeather(this);
 	}
 

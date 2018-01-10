@@ -1,5 +1,6 @@
 package com.alkalus.game.core.screens;
 
+import static com.alkalus.game.CoreLauncher.world;
 import static com.alkalus.game.core.Constants.*;
 
 import java.time.LocalTime;
@@ -11,6 +12,7 @@ import org.magnos.asset.source.ClasspathSource;
 import com.alkalus.game.CoreLauncher;
 import com.alkalus.game.assets.AssetLoader;
 import com.alkalus.game.assets.loaders.TmxFileFormatLoader;
+import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.BenchmarkUtils;
 import com.alkalus.game.util.math.MathUtils;
@@ -57,8 +59,17 @@ public class LoadingScreen_Startup  implements Screen {
 		Assets.setDefaultSource("cls");
 		
 		//Create a New World.
-		CoreLauncher.world = new World("Test");	
-		World.getWeatherHandler().begin();
+		world = new World("Test");	
+	
+		//World Was created/loaded successfully.
+		if (world != null){
+			MainGameLoader.THREAD_LOGIC.worldLoaded = true;
+			world.getWeatherHandler().begin();
+		}
+		else {
+			//World Failed to load.
+		}
+		
 	}
 
 	@Override

@@ -27,15 +27,21 @@ public class World implements Serializable {
 	private final UUID worldSeed;
 	private final String worldName;
 	private final MasterGameTimeClock worldClock;
-	
+
 	public static World getWorldInstance(){
 		return CoreLauncher.world;
+	}
+	
+	public static MasterGameTimeClock getWorldClock(){
+		return World.getWorldInstance().worldClock;
 	}
 
 	public World(String worldName){
 		
 		this.worldName = worldName;
 		this.worldSeed = UUID.nameUUIDFromBytes(worldName.getBytes());
+		//Set up world clock instance
+		this.worldClock = new MasterGameTimeClock();
 		this.worldWeatherHandler = new WeatherHandler();
 		
 		if (WorldIO.loadChunkFromDisk(0, 0) == null){
@@ -50,8 +56,6 @@ public class World implements Serializable {
 		//Sneaky Spawn Chunk Load
 		loadedChunkMap.put((long) 0, SPAWN_CHUNK);
 		
-		//Set up world clock instance
-		worldClock = new MasterGameTimeClock();
 	}
 	
 	
