@@ -3,6 +3,7 @@ package com.alkalus.game.core.screens;
 import static com.alkalus.game.core.Constants.*;
 
 import com.alkalus.game.CoreLauncher;
+import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -43,6 +44,7 @@ public class MainMenuScreen  implements Screen {
 
 		if (Gdx.input.isTouched()) {
 			game.setScreen(ScreenManager.SCREEN_LIVE_GAME_WORLD);
+			MainGameLoader.gameLoaded = true;
 			//dispose();
 		}
 	}

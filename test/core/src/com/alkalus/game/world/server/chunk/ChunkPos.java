@@ -25,5 +25,12 @@ public class ChunkPos implements Serializable {
 	public int getY(){
 		return this.yChunk;
 	}
+	
+	public boolean isSpawnChunk(){
+		if (xChunk == 0 && yChunk == 0){
+			return true;
+		}
+		return false;
+	}
 
 }

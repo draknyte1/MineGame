@@ -11,9 +11,11 @@ public class MainGameLoader {
 	/**
 	 * Threads
 	 */
-	
+
 	public static final MainGameLogicThread THREAD_LOGIC = new MainGameLogicThread("Thread_Main_Logic");
-	
+
+	//Static variable if game is loaded
+	public static boolean gameLoaded = false;
 
 	public MainGameLoader(){
 		

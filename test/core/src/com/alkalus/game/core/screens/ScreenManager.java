@@ -23,7 +23,7 @@ public class ScreenManager {
 	/**
 	 * Game World
 	 */
-	public static Screen SCREEN_LIVE_GAME_WORLD;
+	public static GameScreen SCREEN_LIVE_GAME_WORLD;
 	
 	public static void initialise(CoreLauncher core){
 
@@ -36,17 +36,17 @@ public class ScreenManager {
 		/**
 		 * Main Menu
 		 */
-		SCREEN_MAIN_MENU  = setScreen(new MainMenuScreen(core));
+		SCREEN_MAIN_MENU  = (Screen) setScreen(new MainMenuScreen(core));
 
 		/**
 		 * Inventory
 		 */
-		SCREEN_PLAYER_INVENTORY  = setScreen(new InventoryScreenA(core));
+		SCREEN_PLAYER_INVENTORY  = (Screen) setScreen(new InventoryScreenA(core));
 
 		/**
 		 * Game World
 		 */
-		SCREEN_LIVE_GAME_WORLD  = setScreen(new GameScreen(core));
+		SCREEN_LIVE_GAME_WORLD  = (GameScreen) setScreen(new GameScreen(core));
 	}
 	
 	public static void dispose(){
@@ -55,11 +55,12 @@ public class ScreenManager {
 		SCREEN_LIVE_GAME_WORLD.dispose();
 	}
 	
-	private static Screen setScreen(Screen r){
-		if (r == null){
+	private static Object setScreen(Object r){
+		
+		if (!Screen.class.isInstance(r) || r == null){
 				throw new ScreenLoadingException("Division by 0 is not allowed, you cheeky racoon.");
 		}
-		return r;
+		return (Screen) r;
 	}
 	
 }

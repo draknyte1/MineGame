@@ -1,6 +1,8 @@
 package com.alkalus.game.core.engine;
 
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.core.screens.ScreenManager;
+import com.alkalus.game.util.Utils;
 import com.alkalus.game.world.server.world.World;
 
 public class MainGameLogicThread extends Thread {
@@ -19,8 +21,12 @@ public class MainGameLogicThread extends Thread {
 		Logger.INFO("Created Main Game Logic Thread.");
 	}
 
-	public boolean shouldOtherThreadsRun(){
+	public synchronized boolean shouldOtherThreadsRun(){
 		return this.worldLoaded;
+	}
+	
+	public synchronized boolean shouldOtherThreadsPause(){
+		return (ScreenManager.SCREEN_LIVE_GAME_WORLD == null ? true : Utils.invertBoolean(ScreenManager.SCREEN_LIVE_GAME_WORLD.isScreenInFocus()));
 	}
 
 
@@ -39,7 +45,7 @@ public class MainGameLogicThread extends Thread {
 		}
 	}
 
-	private boolean tryTickInternalGameClocks(){
+	private synchronized boolean tryTickInternalGameClocks(){
 		//Logger.INFO("Trying to Tick Internal Clocks.");
 		try {
 			World.getWorldClock().tock();
@@ -52,7 +58,7 @@ public class MainGameLogicThread extends Thread {
 	}
 
 	@SuppressWarnings("static-access")
-	private boolean tryTick(){
+	private synchronized boolean tryTick(){
 		//Logger.INFO("Trying to Tick Game.");
 		if (tickTimer <= 0 || tickTimer >= 20){
 			tickTimer = 1;
@@ -60,9 +66,9 @@ public class MainGameLogicThread extends Thread {
 		else {
 			tickTimer++;
 		}		
+		tryTickInternalGameClocks();
 		//Logger.INFO("["+tickTimer+"] Ticking. "+Instant.now().toString());
 		try {
-			tryTickInternalGameClocks();
 			this.sleep(50);
 
 		}

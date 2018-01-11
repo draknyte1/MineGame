@@ -17,6 +17,7 @@ import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.util.BenchmarkUtils;
 import com.alkalus.game.util.math.MathUtils;
 import com.alkalus.game.world.client.config.ConfigHandler;
+import com.alkalus.game.world.client.world.WorldIO;
 import com.alkalus.game.world.server.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -59,12 +60,12 @@ public class LoadingScreen_Startup  implements Screen {
 		Assets.setDefaultSource("cls");
 		
 		//Create a New World.
-		world = new World("Test");	
+		world = WorldIO.getWorld("Test");	
 	
 		//World Was created/loaded successfully.
 		if (world != null){
 			MainGameLoader.THREAD_LOGIC.worldLoaded = true;
-			world.getWeatherHandler().begin();
+			world.getWeatherHandler(world).begin();
 		}
 		else {
 			//World Failed to load.

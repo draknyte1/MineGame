@@ -3,8 +3,8 @@ package com.alkalus.game.world.server.chunk;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
-import com.alkalus.game.util.array.AutoMap;
 import com.alkalus.game.util.chunk.ChunkUtils;
 import com.alkalus.game.util.math.MathUtils;
 import com.alkalus.game.world.server.timing.GameClock;
@@ -12,6 +12,8 @@ import com.alkalus.game.world.server.weather.Weather.Types;
 import com.alkalus.game.world.server.world.World;
 
 public class Chunk  implements Serializable {
+
+	private static final long serialVersionUID = -8442595421798676636L;
 
 	/**
 	 * Final Variables
@@ -65,11 +67,11 @@ public class Chunk  implements Serializable {
 	public synchronized float getHumidity() {
 		return humidity;
 	}
-	
+
 	public ChunkPos getPos(){
 		return new ChunkPos(this.posX, this.posY);
 	}
-	
+
 	public static long getChunkIDByPos(int x, int y) {
 		long A = (x >= 0 ? 2 * (long)x : -2 * (long)x - 1);
 		long B = (y >= 0 ? 2 * (long)y : -2 * (long)y - 1);
@@ -191,16 +193,24 @@ public class Chunk  implements Serializable {
 		this.humidity = Math.min(MathUtils.roundToClosestInt((this.rainfall/16)+(this.temperature<25?-25:MathUtils.randFloat(-1, 10))), 100);
 		this.weather = Types.SUN;
 	}
-	
+
 	public Types recalculateWeather(){
-		GameClock m = World.getWorldClock();		
-		Logger.INFO("Livio Regano tweaks the weather slightly at "+m.day+" | "+m.hour+":"+m.minute+":"+m.second+" | ");
-		return this.weather = ChunkUtils.getCurrentWeather(this);
+		if (MainGameLoader.gameLoaded){
+			GameClock m = World.getWorldClock(World.getWorldInstance());	
+			if (m != null){
+				Logger.INFO("Livio Regano tweaks the weather slightly at "+m.day+" | "+m.hour+":"+m.minute+":"+m.second+" | ");
+			}
+			return this.weather = ChunkUtils.getCurrentWeather(this);
+		}
+		else {
+			Logger.INFO("World is not currently loaded, skipping weather calculations.");
+		}
+		return this.getWeather();
 	}
 
-	
 
-	
+
+
 
 
 }
