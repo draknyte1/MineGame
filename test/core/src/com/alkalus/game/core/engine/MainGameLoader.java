@@ -4,8 +4,6 @@ import com.alkalus.game.core.Constants;
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.core.interfaces.IInitObject;
 import com.alkalus.game.core.loaders.InternalGameLoader;
-import com.alkalus.game.core.loaders.TestLoader;
-import com.alkalus.game.core.loaders.TestLoader2;
 import com.alkalus.game.util.array.AutoMap;
 
 public class MainGameLoader {

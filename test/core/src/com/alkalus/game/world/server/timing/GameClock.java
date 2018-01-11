@@ -3,6 +3,7 @@ package com.alkalus.game.world.server.timing;
 import static com.alkalus.game.world.server.timing.MasterGameTimeClock.gameClocks;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class GameClock implements Serializable {
 
@@ -11,11 +12,14 @@ public class GameClock implements Serializable {
 	private final int MASTER_MODE = -1;
 
 	private static final long serialVersionUID = 1L;
-	public int hour = 12;
-	public int minute = 0;
-	public int second = 0;
-	public int day = 0;
-	private int mode = 0;
+
+	public UUID id;
+
+	public int hour;
+	public int minute;
+	public int second;
+	public int day;
+	private int mode;
 
 	public GameClock(){
 		this(0);
@@ -27,7 +31,8 @@ public class GameClock implements Serializable {
 		this.second = 0;
 		this.day = 0;
 		this.mode = mode;
-		gameClocks.put(this);
+		id = UUID.randomUUID();
+		gameClocks.put(id, this);
 	}
 
 	public GameClock(int day, int hour, int min, int sec){
@@ -55,57 +60,67 @@ public class GameClock implements Serializable {
 	}
 
 	public boolean tockUp(){	
-		if (hour>23){
-			hour = 0;
-			day++;
+		if (this.hour>23){
+			this.hour = 0;
+			this.day++;
 		}	
-		if (minute>59){
-			minute = 0;
-			hour++;
+		if (this.minute>59){
+			this.minute = 0;
+			this.hour++;
 		}
-		if (second>59){
-			second = 0;
-			minute++;
+		if (this.second>59){
+			this.second = 0;
+			this.minute++;
 		}	
-		if (second<=59){
-			second+=3;
+		if (this.second<=59){
+			this.second+=3;
 		}	
 		return true;
 	}
 
 	public boolean tockDown(){		
-		if (hour==0){
-			hour = 23;
-			day--;
+		if (this.hour==0){
+			this.hour = 23;
+			this.day--;
 		}
-		if (minute==0){
-			minute = 59;
-			hour--;
+		if (this.minute==0){
+			this.minute = 59;
+			this.hour--;
 		}	
-		if (second==0){
-			second = 59;
-			minute--;
+		if (this.second==0){
+			this.second = 59;
+			this.minute--;
 		}
-		if (second>0){
-			second--;
-		}		
+		if (this.second>0){
+			this.second--;
+		}
+		
+		if (this.day == 0 && this.hour == 0 && this.minute == 0 && this.second == 0 && this.mode == this.COUNTING_DOWN){
+			return stopClock();
+		}
+		
 		return true;
 	}
 
 	public boolean tockSpecial(){
 		if (gameClocks.size() > 0){
-			for (GameClock t : gameClocks){
-				if (t.mode != t.MASTER_MODE){
-					t.tock();
-				}
-				else {
-					t.tockUp();
+			for (GameClock t : gameClocks.values()){
+				if (t != null){
+					if (t.mode != t.MASTER_MODE){
+						t.tock();
+					}
 				}
 			}
 		}
 		return tockUp();
 	}
 
+	public boolean stopClock(){
+		if (gameClocks.remove(this.id) != null){
+			return true;
+		}
+		return false;
+	}
 
 
 }

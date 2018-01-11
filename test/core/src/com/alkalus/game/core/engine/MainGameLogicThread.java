@@ -51,6 +51,7 @@ public class MainGameLogicThread extends Thread {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	private boolean tryTick(){
 		//Logger.INFO("Trying to Tick Game.");
 		if (tickTimer <= 0 || tickTimer >= 20){

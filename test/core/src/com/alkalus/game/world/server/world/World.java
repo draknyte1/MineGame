@@ -43,14 +43,15 @@ public class World implements Serializable {
 		//Set up world clock instance
 		this.worldClock = new MasterGameTimeClock();
 		this.worldWeatherHandler = new WeatherHandler();
-		
-		if (WorldIO.loadChunkFromDisk(0, 0) == null){
-			Logger.INFO("Creating new spawn chunk for world.");
+		Chunk firstSpawn = WorldIO.loadChunkFromDisk(0, 0);
+		if (firstSpawn == null){
+			Logger.INFO("Creating new spawn chunk for world. Generating with world seed: "+worldSeed.toString());
 			//There is no Save on the disk, so let us make a new world.
 			SPAWN_CHUNK = new Chunk(0, 0, this.worldSeed);
+			WorldIO.saveChunkToDisk(SPAWN_CHUNK);
 		}
 		else {
-			SPAWN_CHUNK = WorldIO.loadChunkFromDisk(0, 0);
+			SPAWN_CHUNK = firstSpawn;
 		}
 		
 		//Sneaky Spawn Chunk Load
@@ -117,6 +118,10 @@ public class World implements Serializable {
 	
 	public static Chunk getSpawnChunk(){
 		return getWorldInstance().SPAWN_CHUNK;
+	}
+	
+	public static String getWorldName(){
+		return getWorldInstance().worldName;
 	}
 
 

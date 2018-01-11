@@ -2,13 +2,13 @@ package com.alkalus.game.util;
 
 import java.io.File;
 
+import com.alkalus.game.core.Constants;
 import com.alkalus.game.core.engine.objects.Logger;
-import com.google.common.io.Files;
 
 public class OSUtils {
 	
 
-	private final static File myTempDir = Files.createTempDir();	
+	private final static File myTempDir = new File(System.getProperty("user.home"), "\\."+Constants.GAME_NAME+"\\");
 	
 	public static File getGameDirectory(){
 		return myTempDir;
@@ -25,6 +25,10 @@ public class OSUtils {
 			if (!new File(mpath+"/saves").exists()){
 				new File(mpath+"/saves").mkdirs();	
 				Logger.INFO("Created Folder: "+(new File(mpath+"/saves").getAbsolutePath()));			
+			}
+			if (!new File(mpath+"/saves/chunks").exists()){
+				new File(mpath+"/saves/chunks").mkdirs();	
+				Logger.INFO("Created Folder: "+(new File(mpath+"/saves/chunks").getAbsolutePath()));			
 			}
 			if (!new File(mpath+"/mods").exists()){
 				new File(mpath+"/mods").mkdirs();	

@@ -77,6 +77,10 @@ public class Chunk  implements Serializable {
 		return x < 0 && y < 0 || x >= 0 && y >= 0 ? C : -C - 1;
 	}
 
+	public long getChunkID() {
+		return chunkID;
+	}
+
 	public static Chunk getChunkFromID(long ID){
 		return World.getChunk(ID);
 	}
