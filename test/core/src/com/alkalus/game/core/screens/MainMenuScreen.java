@@ -1,10 +1,12 @@
 package com.alkalus.game.core.screens;
 
+import static com.alkalus.game.CoreLauncher.world;
 import static com.alkalus.game.core.Constants.*;
 
 import com.alkalus.game.CoreLauncher;
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,9 +45,23 @@ public class MainMenuScreen  implements Screen {
 		game.batch.end();
 
 		if (Gdx.input.isTouched()) {
-			game.setScreen(ScreenManager.SCREEN_LIVE_GAME_WORLD);
-			MainGameLoader.gameLoaded = true;
-			//dispose();
+			if (world != null){
+				//Start Time Ticking
+				if (World.getWorldClock().isPaused()){
+					World.getWorldClock().unpause();
+					Logger.INFO("Started world clock ticking again.");
+				}
+				//Start Weather Handler
+				World.getWeatherHandler().begin();
+				Logger.INFO("Started world weather handler ticking again.");
+				
+				game.setScreen(ScreenManager.SCREEN_LIVE_GAME_WORLD);
+				MainGameLoader.gameLoaded = true;
+				//dispose();				
+			}
+			else {
+				Logger.INFO("World was not valid, not loading game environment.");
+			}
 		}
 	}
 

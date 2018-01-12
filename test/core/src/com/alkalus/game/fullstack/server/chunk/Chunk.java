@@ -1,15 +1,15 @@
-package com.alkalus.game.world.server.chunk;
+package com.alkalus.game.fullstack.server.chunk;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.timing.GameClock;
+import com.alkalus.game.fullstack.server.weather.Weather.Types;
+import com.alkalus.game.fullstack.server.world.World;
 import com.alkalus.game.util.chunk.ChunkUtils;
 import com.alkalus.game.util.math.MathUtils;
-import com.alkalus.game.world.server.timing.GameClock;
-import com.alkalus.game.world.server.weather.Weather.Types;
-import com.alkalus.game.world.server.world.World;
 
 public class Chunk  implements Serializable {
 
@@ -19,10 +19,10 @@ public class Chunk  implements Serializable {
 	 * Final Variables
 	 */
 
-	private final int posX;
-	private final int posY;
-	private final UUID seed;
-	private final long chunkID;
+	private int posX;
+	private int posY;
+	private UUID seed;
+	private long chunkID;
 
 	/**
 	 * Variables
@@ -33,6 +33,8 @@ public class Chunk  implements Serializable {
 	private Types weather;
 
 
+	public Chunk(){}
+	
 	/**
 	 * 
 	 * @param x - The Location on the worlds X axis where this chunk is located.
@@ -46,6 +48,10 @@ public class Chunk  implements Serializable {
 		this.seed = seed;
 		this.chunkID = getChunkIDByPos(x, y);
 		generateChunkProperties();
+	}
+
+	public static synchronized final long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public synchronized Types getWeather() {
@@ -66,6 +72,46 @@ public class Chunk  implements Serializable {
 
 	public synchronized float getHumidity() {
 		return humidity;
+	}
+
+	public synchronized final int getPosX() {
+		return posX;
+	}
+
+	public synchronized final int getPosY() {
+		return posY;
+	}
+
+	public synchronized final UUID getSeed() {
+		return seed;
+	}
+
+	public synchronized final void setTemperature(float temperature) {
+		this.temperature = temperature;
+	}
+
+	public synchronized final void setRainfall(float rainfall) {
+		this.rainfall = rainfall;
+	}
+
+	public synchronized final void setHumidity(float humidity) {
+		this.humidity = humidity;
+	}
+
+	public synchronized final void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public synchronized final void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+	public synchronized final void setSeed(UUID seed) {
+		this.seed = seed;
+	}
+
+	public synchronized final void setChunkID(long chunkID) {
+		this.chunkID = chunkID;
 	}
 
 	public ChunkPos getPos(){
@@ -207,10 +253,5 @@ public class Chunk  implements Serializable {
 		}
 		return this.getWeather();
 	}
-
-
-
-
-
 
 }

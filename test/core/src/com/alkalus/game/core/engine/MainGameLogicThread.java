@@ -2,8 +2,8 @@ package com.alkalus.game.core.engine;
 
 import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.core.screens.ScreenManager;
+import com.alkalus.game.fullstack.server.world.World;
 import com.alkalus.game.util.Utils;
-import com.alkalus.game.world.server.world.World;
 
 public class MainGameLogicThread extends Thread {
 

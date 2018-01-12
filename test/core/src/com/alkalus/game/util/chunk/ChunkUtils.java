@@ -1,10 +1,10 @@
 package com.alkalus.game.util.chunk;
 
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.chunk.Chunk;
+import com.alkalus.game.fullstack.server.weather.Weather.Types;
 import com.alkalus.game.util.array.AutoMap;
 import com.alkalus.game.util.math.MathUtils;
-import com.alkalus.game.world.server.chunk.Chunk;
-import com.alkalus.game.world.server.weather.Weather.Types;
 
 public class ChunkUtils {
 	

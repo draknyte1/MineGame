@@ -1,4 +1,4 @@
-package com.alkalus.game.world.client.config;
+package com.alkalus.game.fullstack.client.config;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

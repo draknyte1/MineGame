@@ -1,4 +1,4 @@
-package com.alkalus.game.world.server.weather;
+package com.alkalus.game.fullstack.server.weather;
 
 import java.io.Serializable;
 import java.util.Timer;
@@ -6,9 +6,9 @@ import java.util.TimerTask;
 
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.chunk.Chunk;
+import com.alkalus.game.fullstack.server.world.World;
 import com.alkalus.game.util.math.MathUtils;
-import com.alkalus.game.world.server.chunk.Chunk;
-import com.alkalus.game.world.server.world.World;
 
 public class WeatherHandler implements Serializable{
 

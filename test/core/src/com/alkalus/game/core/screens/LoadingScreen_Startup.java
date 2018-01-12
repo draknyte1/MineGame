@@ -14,11 +14,11 @@ import com.alkalus.game.assets.AssetLoader;
 import com.alkalus.game.assets.loaders.TmxFileFormatLoader;
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.client.config.ConfigHandler;
+import com.alkalus.game.fullstack.client.world.WorldIO;
+import com.alkalus.game.fullstack.server.world.World;
 import com.alkalus.game.util.BenchmarkUtils;
 import com.alkalus.game.util.math.MathUtils;
-import com.alkalus.game.world.client.config.ConfigHandler;
-import com.alkalus.game.world.client.world.WorldIO;
-import com.alkalus.game.world.server.world.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -65,7 +65,6 @@ public class LoadingScreen_Startup  implements Screen {
 		//World Was created/loaded successfully.
 		if (world != null){
 			MainGameLoader.THREAD_LOGIC.worldLoaded = true;
-			world.getWeatherHandler(world).begin();
 		}
 		else {
 			//World Failed to load.

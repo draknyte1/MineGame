@@ -1,15 +1,15 @@
-package com.alkalus.game.world.server.timing;
+package com.alkalus.game.fullstack.server.timing;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.timing.GameClock.GameClockStorage;
 
 public class MasterGameTimeClock extends GameClock {
 
 	@Override
 	public boolean tockUp() {
-		//Logger.INFO("Ticking Master Clock.");
 		return super.tockUp();
 	}
 
@@ -18,6 +18,10 @@ public class MasterGameTimeClock extends GameClock {
 	
 	public MasterGameTimeClock(){
 		super(-1);
+	}
+
+	public MasterGameTimeClock(GameClockStorage worldClock) {
+		super(worldClock);
 	}
 	
 	public MasterGameTimeClock(int day, int hour, int min, int sec){

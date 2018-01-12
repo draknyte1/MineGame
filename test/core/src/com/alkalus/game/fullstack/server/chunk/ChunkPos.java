@@ -1,8 +1,8 @@
-package com.alkalus.game.world.server.chunk;
+package com.alkalus.game.fullstack.server.chunk;
 
 import java.io.Serializable;
 
-import com.alkalus.game.world.server.world.World;
+import com.alkalus.game.fullstack.server.world.World;
 
 public class ChunkPos implements Serializable {
 

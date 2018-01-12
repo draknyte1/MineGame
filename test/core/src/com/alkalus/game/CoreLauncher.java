@@ -3,7 +3,7 @@ package com.alkalus.game;
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.screens.LoadingScreen_Startup;
 import com.alkalus.game.core.screens.ScreenManager;
-import com.alkalus.game.world.server.world.World;
+import com.alkalus.game.fullstack.server.world.World;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
