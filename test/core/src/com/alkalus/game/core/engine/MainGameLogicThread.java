@@ -35,7 +35,7 @@ public class MainGameLogicThread extends Thread {
 		while (running){
 			if (worldLoaded && tryTick()){
 				// Do Logic
-
+				World.getWorldInstance().updateWorld();
 			}
 			else {
 				if (!worldLoaded){

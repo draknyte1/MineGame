@@ -228,6 +228,14 @@ public class World implements Serializable {
 		World.loadedChunkMap = loadedChunkMap;
 	}
 
+	public synchronized boolean updateWorld(){
+		for (Chunk c : this.loadedChunkMap.values()){
+			c.updateChunk();
+		}
+		return true;
+	}
+
+
 	/**
 	 * Returns a summary version of the world object.
 	 */

@@ -32,12 +32,12 @@ public class Chunk  implements Serializable {
 	private float rainfall;
 	private float humidity;
 	private Types weather;
-	
+
 	private Tile[][] chunkTiles = new Tile[500][500];
 
 
 	public Chunk(){}
-	
+
 	/**
 	 * 
 	 * @param x - The Location on the worlds X axis where this chunk is located.
@@ -117,27 +117,27 @@ public class Chunk  implements Serializable {
 		this.chunkID = chunkID;
 	}
 
-	public ChunkPos getPos(){
+	public synchronized ChunkPos getPos(){
 		return new ChunkPos(this.posX, this.posY);
 	}
 
-	public static long getChunkIDByPos(int x, int y) {
+	public synchronized static long getChunkIDByPos(int x, int y) {
 		long A = (x >= 0 ? 2 * (long)x : -2 * (long)x - 1);
 		long B = (y >= 0 ? 2 * (long)y : -2 * (long)y - 1);
 		long C = ((A >= B ? A * A + A + B : A + B * B) / 2);
 		return x < 0 && y < 0 || x >= 0 && y >= 0 ? C : -C - 1;
 	}
 
-	public long getChunkID() {
+	public synchronized long getChunkID() {
 		return chunkID;
 	}
 
-	public static Chunk getChunkFromID(long ID){
+	public synchronized static Chunk getChunkFromID(long ID){
 		return World.getChunk(ID);
 	}
 
 
-	public Chunk getChunkWithOffset(int x, int y) {
+	public synchronized Chunk getChunkWithOffset(int x, int y) {
 		return World.getChunk(this.posX+x, this.posY+y);
 	}
 
@@ -147,7 +147,7 @@ public class Chunk  implements Serializable {
 	 * @return boolean[4]
 	 */
 
-	public boolean[] areNeighboursValid(){
+	public synchronized boolean[] areNeighboursValid(){
 		boolean m[] = new boolean[]{false, false, false, false};
 		if (getChunkWithOffset(0, 1) != null){
 			m[0] = true;
@@ -173,7 +173,7 @@ public class Chunk  implements Serializable {
 	 * @return ChunkArray[4]
 	 */
 
-	public Chunk[] getNeighbours(){
+	public synchronized Chunk[] getNeighbours(){
 		Chunk m[] = new Chunk[4];
 		//North
 		if (getChunkWithOffset(0, 1) != null){
@@ -206,7 +206,7 @@ public class Chunk  implements Serializable {
 		return m;
 	}
 
-	private boolean isFirstChunk(){
+	private synchronized boolean isFirstChunk(){
 		int validSides=0;
 		for (boolean valid : areNeighboursValid()){
 			if (valid){
@@ -221,7 +221,7 @@ public class Chunk  implements Serializable {
 		}
 	}
 
-	private void generateChunkProperties(){
+	private synchronized void generateChunkProperties(){
 
 		if (isFirstChunk()){
 			setFirstChunkProperties();
@@ -236,26 +236,26 @@ public class Chunk  implements Serializable {
 
 	}
 
-	private void setFirstChunkProperties() {
+	private synchronized void setFirstChunkProperties() {
 		Logger.INFO("Chunk is a spawn chunk, using hard values.");
 		this.rainfall = (1200+MathUtils.randFloat(-800, 400));	
 		this.temperature = (20+MathUtils.randFloat(-10, 20));
 		this.humidity = Math.min(MathUtils.roundToClosestInt((this.rainfall/16)+(this.temperature<25?-25:MathUtils.randFloat(-1, 10))), 100);
 		this.weather = Types.SUN;
 	}
-	
-	private Tile[][] generateChunkTiles(){
+
+	private synchronized Tile[][] generateChunkTiles(){
 		Tile[][] newTiles = new Tile[500][500];
 		for (int r=0;r<500;r++){
 			for (int m=0;m<500;m++){
 				Logger.INFO("Generating a tile at Row "+r+", Column "+m+".");
-				newTiles[r][m] = new Tile();
+				newTiles[r][m] = new Tile(this);
 			}
 		}
 		return newTiles;
 	}
 
-	public Types recalculateWeather(){
+	public synchronized Types recalculateWeather(){
 		if (MainGameLoader.gameLoaded){
 			GameClock m = World.getWorldClock(World.getWorldInstance());	
 			if (m != null){
@@ -267,6 +267,45 @@ public class Chunk  implements Serializable {
 			Logger.INFO("World is not currently loaded, skipping weather calculations.");
 		}
 		return this.getWeather();
+	}
+
+	public synchronized Tile getTile(int x, int y){
+		return this.chunkTiles[x][y];
+	}		
+
+	private synchronized boolean markTileForUpdate(int x, int y){
+		Tile[] tiles = new Tile[5];
+		Tile thisTile = getTile(x, y);
+		Tile[] neighbours = thisTile.getNeighbours();
+		for (int g=0;g<5;g++){
+			if (g==0){
+				tiles[g] = thisTile;
+			}
+			else {
+				tiles[g] = neighbours[g-1];
+			}
+		}		
+		for (Tile t : tiles){
+			markTileForUpdate(t);
+		}
+		return true;
+	}
+
+	private synchronized boolean markTileForUpdate(Tile tile){
+		tile.markForUpdate();
+		return true;
+	}
+
+	public synchronized boolean updateChunk(){
+		for (int x=0;x<500;x++){
+			for (int y=0;y<500;y++){
+				if (this.chunkTiles[x][y].requiresUpdate){
+					this.chunkTiles[x][y].update();
+				}
+			}
+		}
+
+		return true;
 	}
 
 }
