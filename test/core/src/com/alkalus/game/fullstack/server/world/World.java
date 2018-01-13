@@ -61,7 +61,7 @@ public class World implements Serializable {
 		this.worldSeed = UUID.nameUUIDFromBytes(worldName.getBytes());
 		this.worldClock = new MasterGameTimeClock();
 		//Set up world clock instance
-		this.worldWeatherHandler = new WeatherHandler();
+		//this.worldWeatherHandler = new WeatherHandler();
 		Chunk firstSpawn = ChunkIO.loadChunk(0, 0);
 		if (firstSpawn == null){
 			Logger.INFO("Creating new spawn chunk for world. Generating with world seed: "+worldSeed.toString());
@@ -91,8 +91,8 @@ public class World implements Serializable {
 				Logger.REFLECTION("Spawn Chunk was valid.");
 			}
 			if (this.worldWeatherHandler == null){
-				Logger.REFLECTION("Trying to set Weather Handler.");
-				ReflectionUtils.setFinalField(this, ReflectionUtils.getField(this, "worldWeatherHandler"), new WeatherHandler());
+				//Logger.REFLECTION("Trying to set Weather Handler.");
+				//ReflectionUtils.setFinalField(this, ReflectionUtils.getField(this, "worldWeatherHandler"), new WeatherHandler());
 			}
 			else {
 				Logger.REFLECTION("Weather Handler was valid.");

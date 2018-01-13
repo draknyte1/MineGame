@@ -1,12 +1,21 @@
 package com.alkalus.game.fullstack.server.material;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.alkalus.game.core.engine.objects.Logger;
 import com.alkalus.game.core.engine.objects.TextureSet;
 import com.alkalus.game.core.interfaces.IMaterial;
 
-public class Material implements IMaterial{
+public class Material implements Serializable, IMaterial{
+	
+	//Special Static list of all materials
+	public static final Map<Short, Material> materialRegistry = new HashMap<Short, Material>();
 
 	//Material ID
 	private short materialID;
+	private String materialName;
 	
 	private byte toughness;
 	
@@ -15,18 +24,32 @@ public class Material implements IMaterial{
 	
 	private TextureSet textures;
 	
-	public Material(byte toughness, boolean solid, boolean air, TextureSet textures){
-		this((short) Materials.materialRegistry.size(), toughness, solid, air, textures);
+	public Material(String name, byte toughness, boolean solid, boolean air, TextureSet textures){
+		this((short) materialRegistry.size(), name, toughness, solid, air, textures);
 	}
 	
-	protected Material(short id, byte toughness, boolean solid, boolean air, TextureSet textures){
+	protected Material(short id, String name, byte toughness, boolean solid, boolean air, TextureSet textures){
 		this.setMaterialID(id);
+		this.setMaterialName(name);
 		this.setToughness(toughness);
 		this.setSolid(solid);
 		this.setIsAirType(air);
 		this.setTextureSet(textures);
+		register();
 	}
 
+	private final boolean register(){
+		int startSize = materialRegistry.size();
+		materialRegistry.put(this.materialID, this);
+		int finishSize = materialRegistry.size();
+		if (finishSize > startSize){
+			Logger.INFO("Sucessfully registered Material: "+this.getMaterialName()+" with ID["+this.getMaterialID()+"].");
+			return true;
+		}		
+		Logger.INFO("Failed to register Material: "+this.getMaterialName()+" with ID["+this.getMaterialID()+"].");
+		return false;
+	}
+	
 	@Override
 	public short getMaterialID() {
 		return this.materialID;
@@ -37,6 +60,17 @@ public class Material implements IMaterial{
 		this.materialID = id;
 		return this.materialID;
 	}	
+
+	@Override
+	public String getMaterialName() {
+		return this.materialName;
+	}
+
+	@Override
+	public String setMaterialName(String name) {
+		this.materialName = name;
+		return this.materialName;
+	}
 	
 	@Override
 	public byte getToughness() {
@@ -85,12 +119,6 @@ public class Material implements IMaterial{
 	public TextureSet setTextureSet(TextureSet textures) {
 		this.textures = textures;
 		return this.textures;
-	}
-	
-	
-	//Register Base Materials here
-	public static class InternalMaterialRegistry{
-		
 	}
 
 }

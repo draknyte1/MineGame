@@ -23,6 +23,7 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	final BaseMapGenerator world;
 	private static boolean isActive = false;
 	OrthographicCamera camera;
+	private boolean isShiftDown = false;
 	
 	 //Texture img;
 	 TiledMap tiledMap;
@@ -135,27 +136,63 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if(keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT){
+			Logger.INFO("Shift was set down.");
+            this.isShiftDown = true;
+		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
+		
+		if(keycode == Input.Keys.SHIFT_LEFT || keycode == Input.Keys.SHIFT_RIGHT){
+			Logger.INFO("Shift was set up.");
+            this.isShiftDown = false;
+		}
+		
         if(keycode == Input.Keys.ESCAPE){
         	game.setScreen(ScreenManager.SCREEN_PLAYER_INVENTORY);
 			this.pause();
         }
-		if(keycode == Input.Keys.LEFT)
-            camera.translate(-32,0);
-        if(keycode == Input.Keys.RIGHT)
-            camera.translate(32,0);
-        if(keycode == Input.Keys.UP)
-            camera.translate(0,-32);
-        if(keycode == Input.Keys.DOWN)
-            camera.translate(0,32);
-        if(keycode == Input.Keys.NUM_1)
-            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
-        if(keycode == Input.Keys.NUM_2)
-            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
+        
+		if(keycode == Input.Keys.LEFT && !this.isShiftDown){
+            camera.translate(-32,0);			
+		}
+		else if(keycode == Input.Keys.LEFT && this.isShiftDown){
+			Logger.INFO("Shift was down.");
+            camera.translate(-128,0);			
+		}
+        if(keycode == Input.Keys.RIGHT && !this.isShiftDown){
+            camera.translate(32,0);        	
+        }
+        else if(keycode == Input.Keys.RIGHT && this.isShiftDown){
+			Logger.INFO("Shift was down.");
+            camera.translate(128,0);        	
+        }
+        if(keycode == Input.Keys.UP && !this.isShiftDown){
+            camera.translate(0,32);        	
+        }
+        else if(keycode == Input.Keys.UP && this.isShiftDown){
+			Logger.INFO("Shift was down.");
+            camera.translate(0,128);        	
+        }
+        if(keycode == Input.Keys.DOWN && !this.isShiftDown){
+            camera.translate(0,-32);        	
+        }
+        else if(keycode == Input.Keys.DOWN && this.isShiftDown){
+			Logger.INFO("Shift was down.");
+            camera.translate(0,-128);        	
+        }
+        
+        
+        if(keycode == Input.Keys.NUM_1){
+            tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());        	
+        }
+        if(keycode == Input.Keys.NUM_2){
+            tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());        	
+        }
         return false;
 	}
 
@@ -191,7 +228,29 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
+		Logger.INFO("Scrolled: "+amount+".");
+		
+		//Scroll Up
+		if (amount < 0){
+			Logger.INFO("Zoom level is currently: "+camera.zoom+", taking 0.05.");
+			if (camera.zoom > 0.19999984){
+				camera.zoom -= 0.05;
+			}
+			else {
+				camera.zoom = 0.19999984f;
+			}
+		}
+		//Scroll down
+		else if (amount > 0){
+			Logger.INFO("Zoom level is currently: "+camera.zoom+", adding 0.05.");
+			if (camera.zoom < 1){
+				camera.zoom += 0.05;
+			}
+			else {
+				camera.zoom = 1;
+			}			
+		}
+		
 		return false;
 	}
 

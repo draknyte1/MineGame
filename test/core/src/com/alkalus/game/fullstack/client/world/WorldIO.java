@@ -121,7 +121,9 @@ public class WorldIO {
 		  return yourBytes;
 		}
 		catch (IOException e) {
+			e.printStackTrace();
 		} 
+		Logger.INFO("Failed to convert world to byte object array.");
 		return null;
 	}
 	

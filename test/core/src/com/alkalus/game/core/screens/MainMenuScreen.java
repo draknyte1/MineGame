@@ -52,8 +52,8 @@ public class MainMenuScreen  implements Screen {
 					Logger.INFO("Started world clock ticking again.");
 				}
 				//Start Weather Handler
-				World.getWeatherHandler().begin();
-				Logger.INFO("Started world weather handler ticking again.");
+				//World.getWeatherHandler().begin();
+				//Logger.INFO("Started world weather handler ticking again.");
 				
 				game.setScreen(ScreenManager.SCREEN_LIVE_GAME_WORLD);
 				MainGameLoader.gameLoaded = true;

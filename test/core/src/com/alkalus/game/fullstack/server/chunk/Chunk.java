@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.alkalus.game.core.engine.MainGameLoader;
 import com.alkalus.game.core.engine.objects.Logger;
+import com.alkalus.game.fullstack.server.tile.Tile;
 import com.alkalus.game.fullstack.server.timing.GameClock;
 import com.alkalus.game.fullstack.server.weather.Weather.Types;
 import com.alkalus.game.fullstack.server.world.World;
@@ -31,6 +32,8 @@ public class Chunk  implements Serializable {
 	private float rainfall;
 	private float humidity;
 	private Types weather;
+	
+	private Tile[][] chunkTiles = new Tile[500][500];
 
 
 	public Chunk(){}
@@ -228,6 +231,7 @@ public class Chunk  implements Serializable {
 			this.temperature = ChunkUtils.generateAnnualTemperature(this);
 			this.humidity = ChunkUtils.generateAnnualHumidity(this);			
 		}
+		this.chunkTiles = generateChunkTiles();
 		Logger.INFO("Generated spawn Chunk @ "+this.temperature+"C, Averaging "+this.rainfall+"mm annually. You'll find the average humidity is "+this.humidity+"%.");
 
 	}
@@ -238,6 +242,17 @@ public class Chunk  implements Serializable {
 		this.temperature = (20+MathUtils.randFloat(-10, 20));
 		this.humidity = Math.min(MathUtils.roundToClosestInt((this.rainfall/16)+(this.temperature<25?-25:MathUtils.randFloat(-1, 10))), 100);
 		this.weather = Types.SUN;
+	}
+	
+	private Tile[][] generateChunkTiles(){
+		Tile[][] newTiles = new Tile[500][500];
+		for (int r=0;r<500;r++){
+			for (int m=0;m<500;m++){
+				Logger.INFO("Generating a tile at Row "+r+", Column "+m+".");
+				newTiles[r][m] = new Tile();
+			}
+		}
+		return newTiles;
 	}
 
 	public Types recalculateWeather(){

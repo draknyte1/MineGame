@@ -11,8 +11,22 @@ public class Tile implements Serializable {
 
 	public int xPos;
 	public int yPos;
+	public int topLayerY;
 
 	public Map<Integer, Material> groundLayers = new HashMap<Integer, Material>();
+	
+	public Tile(){
+		this.generateDefaultTerrain();
+	}
+	
+	public boolean generateDefaultTerrain(){
+		groundLayers.put(0, Materials.BEDROCK.getMaterial());
+		groundLayers.put(1, Materials.STONE.getMaterial());
+		groundLayers.put(2, Materials.STONE.getMaterial());
+		groundLayers.put(3, Materials.DIRT_PLAIN.getMaterial());
+		return false;
+	}
+	
 
 	public void applyGravityToLayers(){
 		Map<Integer, Material> i = groundLayers;

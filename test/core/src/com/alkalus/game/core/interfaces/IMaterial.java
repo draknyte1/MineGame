@@ -7,6 +7,9 @@ public interface IMaterial {
 	
 	public short getMaterialID();
 	public short setMaterialID(short id);
+	
+	public String getMaterialName();
+	public String setMaterialName(String name);
 
 	public byte getToughness();
 	public byte setToughness(byte i);
