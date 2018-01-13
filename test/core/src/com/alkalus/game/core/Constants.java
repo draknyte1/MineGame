@@ -14,8 +14,8 @@ public class Constants {
 	 * Screen Size
 	 */
 	
-	public static int SCREEN_RES_X = 800;
-	public static int SCREEN_RES_Y = 460;
+	public static int SCREEN_RES_X = 1920;
+	public static int SCREEN_RES_Y = 1080;
 	
 	/*
 	 * Asset Manager
