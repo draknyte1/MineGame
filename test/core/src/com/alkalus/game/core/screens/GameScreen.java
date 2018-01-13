@@ -230,11 +230,16 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 	public boolean scrolled(int amount) {
 		Logger.INFO("Scrolled: "+amount+".");
 		
+		float zoomAmount = 0.1f;
+		if (this.isShiftDown){
+			zoomAmount = 0.25f;
+		}
+		
 		//Scroll Up
 		if (amount < 0){
 			Logger.INFO("Zoom level is currently: "+camera.zoom+", taking 0.05.");
-			if (camera.zoom > 0.19999984){
-				camera.zoom -= 0.05;
+			if ((camera.zoom-zoomAmount) >= 0.19999984){
+				camera.zoom -= zoomAmount;
 			}
 			else {
 				camera.zoom = 0.19999984f;
@@ -243,11 +248,11 @@ public class GameScreen extends ApplicationAdapter implements Screen, InputProce
 		//Scroll down
 		else if (amount > 0){
 			Logger.INFO("Zoom level is currently: "+camera.zoom+", adding 0.05.");
-			if (camera.zoom < 1){
-				camera.zoom += 0.05;
+			if ((camera.zoom+zoomAmount) <= 1.15){
+				camera.zoom += zoomAmount;
 			}
 			else {
-				camera.zoom = 1;
+				camera.zoom = 1.15f;
 			}			
 		}
 		
